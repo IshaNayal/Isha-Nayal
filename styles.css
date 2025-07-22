@@ -1,0 +1,297 @@
+/* Reset & basic setup */
+@import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: "Special Gothic Expanded One", sans-serif; 
+    background-color: #000;
+    color: #fff;
+    overflow: -moz-scrollbars-none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer 10+ */
+  scrollbar-width: none; /* For Firefox */
+    /* scroll-behavior: smooth; */
+  }
+  
+  body::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+  a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  /* Loading screen */
+#loading {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Font and base letter style */
+.loading-text span {
+  font-family: "Special Gothic Expanded One", sans-serif;
+  font-size: 120px;
+  color: rgba(255, 255, 255, 0.1);
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+}
+
+/* Glowing overlay */
+.loading-text span::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #1DCD9F;
+  opacity: 0;
+}
+
+  
+  /* Home page Name Animation  */
+
+  /* === removing default button style ===*/
+.button {
+  margin: 0;
+  height: auto;
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: default;
+}
+
+/* button styling */
+.button {
+  --border-right: 6px;
+  --text-stroke-color: rgba(255,255,255,0.6);
+  --animation-color: #1DCD9F;
+  --fs-size: 2em;
+  letter-spacing: 3px;
+  text-decoration: none;
+  font-size: var(--fs-size);
+  font-family: "Special Gothic Expanded One", sans-serif;
+  position: relative;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-stroke-color);
+}
+
+/* Hover animation text */
+.hover-text {
+  position: absolute;
+  box-sizing: border-box;
+  color: var(--animation-color);
+  width: 0%;
+  inset: 0;
+  border-right: var(--border-right) solid var(--animation-color);
+  overflow: hidden;
+  transition: 0.5s ease;
+  -webkit-text-stroke: 1px var(--animation-color);
+}
+
+/* Trigger hover effect */
+.button:hover .hover-text {
+  width: 100%;
+  filter: drop-shadow(0 0 23px var(--animation-color));
+}
+  
+/* Hero View Project Button */
+
+.lead{
+  margin-bottom: 30px;
+}
+
+
+.shadow__btn {
+  /* margin-top: 120px; */
+  padding: 8px 18px;
+  border: none;
+  font-size: 0.9rem;
+  color: #fff;
+  border-radius: 7px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: 0.5s;
+  transition-property: box-shadow;
+  background: rgb(0, 140, 255);
+  box-shadow: 0 0 20px rgb(0, 140, 255);
+  text-decoration: none;
+}
+
+.shadow__btn:hover {
+  box-shadow: 0 0 5px rgb(0, 140, 255),
+              0 0 25px rgb(0, 140, 255),
+              0 0 50px rgb(0, 140, 255),
+              0 0 100px rgb(0, 140, 255);
+}
+
+/* Hero mail  */
+.fixed-email {
+  font-family: 'Special Gothic Expanded One', sans-serif;
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  transform-origin: left center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.8rem;
+  color: #1DCD9F;
+  text-decoration: none;
+  letter-spacing: 2px;
+  z-index: 999;
+  transition: color 0.3s ease;
+  padding: 5px;
+}
+
+.fixed-email:hover {
+  cursor: pointer;
+}
+
+
+  /* About me  */
+  .dbutton {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    border: 1px solid #17795E;
+    background-color: #209978;
+    overflow: hidden;
+  }
+  
+  .dbutton, .dbutton__icon, .dbutton__text {
+    transition: all 0.3s;
+  }
+  
+  .dbutton .dbutton__text {
+    transform: translateX(22px);
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .dbutton .dbutton__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: #17795E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .dbutton .svg {
+    width: 20px;
+    fill: #fff;
+  }
+  
+  .dbutton:hover {
+    background: #17795E;
+  }
+  
+  .dbutton:hover .dbutton__text {
+    color: transparent;
+  }
+  
+  .dbutton:hover .dbutton__icon {
+    width: 148px;
+    transform: translateX(0);
+  }
+  
+  .dbutton:active .dbutton__icon {
+    background-color: #146c54;
+  }
+  
+  .dbutton:active {
+    border: 1px solid #146c54;
+  }
+
+  /* Journey Section  */
+  .group {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Mobile menu */
+  #mobileMenu a {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  #mobileMenu a:hover {
+    color: #0d6efd;
+  }
+  
+  
+  /* Hero section */
+  .hero {
+    min-height: 90vh;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  
+  .hero-left {
+    flex: 1 1 45%;
+  }
+  
+  .hero-right {
+    flex: 1 1 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .code-box {
+    background-color: #1e1e1e;
+    color: #dcdcdc;
+    width: 100%;
+    max-width: 500px;
+    font-family: "Special Gothic Expanded One", sans-serif;    font-size: 1rem;
+    overflow: auto;
+    border-left: 4px solid #0d6efd;
+    transition: transform 0.3s ease;
+  }
+  
+  .code-box:hover {
+    transform: scale(1.03);
+  }
+  
+  .view-projects-btn {
+    transition: all 0.3s ease;
+  }
+  
+  .view-projects-btn:hover {
+    transform: scale(1.05);
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  /* About Section  */
+  #about i{
+    font-size: 30px;
+  }
+
+  /* Tech Stack */
+  #techstack i {
+    font-size: 50px;
+  }
+  
+
+  #framer{
+
+    color: white;
+  }
+
+  
