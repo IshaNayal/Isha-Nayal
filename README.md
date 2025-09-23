@@ -1,7 +1,6 @@
 <h1 align="center">Hi 👋, I'm Isha Nayal </h1> 
 
-<h1 https://final-portfolio-tawny.vercel.app/</h1>
-
+ <h1 https://final-portfolio-tawny.vercel.app/ > </h1>
 
 <h3 align="left">Connect with me: </h3>
 <p align="left">
