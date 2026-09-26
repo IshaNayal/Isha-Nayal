@@ -1,0 +1,14 @@
+# Render deployment config — static site served via nginx
+# Build Command:  echo "No build step"
+# Start Command:  docker-entrypoint.sh
+
+services:
+  - type: web
+    name: portfolio
+    env: docker
+    dockerfile: Dockerfile
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: echo "No build step"
+    startCommand: docker-entrypoint.sh
