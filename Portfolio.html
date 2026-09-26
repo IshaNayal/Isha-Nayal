@@ -1379,7 +1379,7 @@ function App() {
         <a href="#top" className="logo"><span className="hanko">{t.last ? (t.last[0] === 'S' ? 'स' : t.last[0]) : ''}</span><JumpText text={`${t.first} ${t.last}`} /></a>
         <nav>{nav.map(([n, l, h]) => <a key={h} href={h}><b>{n}</b><JumpText text={l} /></a>)}</nav>
         <div className="meta">
-          <span className="tz"><span className="dot" />India {clock}</span>
+          <span className="tz"><span className="dot" />IST {clock}</span>
           <button className="mode-btn" onClick={() => setTweak('dark', !t.dark)}>{t.dark ? 'Light' : 'Dark'}</button>
         </div>
         <div className="prog" style={{ width: (prog * 100) + '%' }} />
