@@ -116,14 +116,14 @@ section{position:relative;padding:clamp(48px,8vw,150px) var(--pad)}
 
 /* variant: kinetic */
 .h-kin{flex:1;display:flex;flex-direction:column;justify-content:center;gap:0;margin:0 calc(var(--pad)*-1)}
-.row{overflow:hidden;white-space:nowrap;border-top:2px solid var(--line);padding:14px 0}
+.row{overflow:hidden;white-space:nowrap;border-top:2px solid var(--line);padding:20px 0}
 .row:last-child{border-bottom:2px solid var(--line)}
 .row .track{display:inline-flex;animation:mq var(--sp,22s) linear infinite}
 .row.rev .track{animation-direction:reverse}
-.row span{font-family:var(--f-disp);font-size:clamp(40px,7.5vw,130px);line-height:1.5;padding-right:.5em;vertical-align:middle}
+.row span{font-family:var(--f-disp);font-size:clamp(38px,7vw,120px);line-height:1.7;padding-right:.5em}
 .row span.o{color:transparent;-webkit-text-stroke:2px var(--fg)}
 .row span.a{color:var(--acc)}
-.row.big span{font-size:clamp(56px,11vw,190px)}
+.row.big span{font-size:clamp(52px,10vw,180px)}
 @keyframes mq{to{transform:translateX(-50%)}}
 .kin-sub{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:24px var(--pad) 0}
 
