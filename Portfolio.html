@@ -942,7 +942,16 @@ const KANJI = [
   { c: 'बुद्धि', r: 'buddhi', m: 'intelligence' },
   { c: 'जोड़', r: 'jod', m: 'to connect' },
   { c: 'सपना', r: 'sapna', m: 'dream' },
+  { c: 'दृष्टि', r: 'drishti', m: 'vision or perspective' },
+  { c: 'सृष्टि', r: 'srishti', m: 'creation or universe' },
+  { c: 'कल्पना', r: 'kalpana', m: 'imagination' },
+  { c: 'लगन', r: 'lagan', m: 'dedication or passion' },
+  { c: 'जिज्ञासा', r: 'jigyasa', m: 'curiosity' },
+  { c: 'नूतन', r: 'nootan', m: 'new or innovative' },
+  { c: 'प्रवाह', r: 'pravah', m: 'flow or fluency' },
+  { c: 'खोज', r: 'khoj', m: 'discovery or research' }
 ];
+
 
 function KanjiField({ onChange }) {
   const cvRef = useRef(null);
@@ -957,24 +966,30 @@ function KanjiField({ onChange }) {
     const mouse = { x: -99, y: -99 };
 
     const sample = (ch) => {
-      const o = document.createElement('canvas'); o.width = G; o.height = G;
+      const o = document.createElement('canvas');
+      // Devanagari words are wider than single CJK glyphs — sample on a wider canvas
+      const W = Math.max(G * 4, Math.round(G * ch.length * 0.78));
+      o.width = W; o.height = G;
       const c = o.getContext('2d');
-      c.fillStyle = '#000'; c.textAlign = 'center'; c.textBaseline = 'middle';
-      c.font = `${Math.floor(G * 0.92)}px "Noto Devanagari", "DotGothic16", monospace`;
-      c.fillText(ch, G / 2, G / 2 + 1);
-      const d = c.getImageData(0, 0, G, G).data;
+      c.fillStyle = '#000'; c.textAlign = 'left'; c.textBaseline = 'middle';
+      c.font = `${Math.floor(G * 0.82)}px "Noto Devanagari", "DotGothic16", monospace`;
+      c.fillText(ch, 4, G / 2 + 1);
+      const d = c.getImageData(0, 0, W, G).data;
       const pts = [];
-      for (let y = 0; y < G; y++) for (let x = 0; x < G; x++) if (d[(y * G + x) * 4 + 3] > 110) pts.push([x, y]);
+      for (let y = 0; y < G; y++) for (let x = 0; x < W; x++) if (d[(y * W + x) * 4 + 3] > 110) pts.push([x, y]);
       return pts;
     };
 
     const setTarget = (i) => {
       const pts = targets[i].slice().sort(() => Math.random() - 0.5);
+      // Normalize sampled x into the G×G grid so multi-char words fit the canvas
+      const maxX = Math.max(1, ...pts.map(p => p[0]));
+      const scale = (G - 2) / maxX;
       while (parts.length < pts.length) {
         parts.push({ x: Math.random() * G, y: Math.random() * G, vx: 0, vy: 0, tx: 0, ty: 0, on: false, a: Math.random() < 0.12 });
       }
       parts.forEach((p, k) => {
-        if (k < pts.length) { p.tx = pts[k][0]; p.ty = pts[k][1]; p.on = true; }
+        if (k < pts.length) { p.tx = pts[k][0] * scale + 1; p.ty = pts[k][1]; p.on = true; }
         else { p.tx = Math.random() * G; p.ty = G + 2 + Math.random() * 4; p.on = false; }
         // kick for a burst
         p.vx += (Math.random() - 0.5) * 2.2; p.vy += (Math.random() - 0.5) * 2.2;
