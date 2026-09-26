@@ -798,7 +798,8 @@ Object.assign(window, { TweakSuggestionBar });
 // effects.jsx — kinetic / pixel effects shared by the portfolio
 const { useEffect, useRef, useState, useCallback } = React;
 
-const KATA = 'अइउएओकखगघचछजझटठडढणतथदधनपफबभमयरलवशषसह';
+const HINDI = 'अइउएओकखगघचछजझटठडढणतथदधनपफबभमयरलवशषसह';
+const KATA = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン';
 const LAT = '#$%&*+=<>/\\0123456789ABCDEFXYZ';
 
 /* ---------- Scramble text: decodes when scrolled into view ---------- */
@@ -814,9 +815,11 @@ function Scramble({ text, as = 'span', className = '', duration = 700, delay = 0
       let s = '';
       for (let i = 0; i < text.length; i++) {
         const c = text[i];
+        const code = c.charCodeAt(0);
         if (i < n || c === ' ' || c === '\n') s += c;
         else {
-          const set = c.charCodeAt(0) > 0x2e80 ? KATA : LAT;
+          // Devanagari (U+0900–U+097F) → Hindi alphabet; CJK (U+4E00+) → KATA; else Latin
+          const set = code >= 0x0900 && code <= 0x097f ? HINDI : code > 0x2e80 ? KATA : LAT;
           s += set[(Math.random() * set.length) | 0];
         }
       }
