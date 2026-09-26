@@ -1357,7 +1357,7 @@ const FONT_SETS = {
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const prog = useScrollProgress();
-  const clock = useClock();
+  const clock = useClock('Asia/Kolkata');
   useReveal([t.hero, t.grid]);
 
   React.useEffect(() => {
