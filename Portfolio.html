@@ -1182,14 +1182,14 @@ function HeroTerminal({ t }) {
 }
 
 function Hero({ t }) {
-  const clock = useClock();
+  const clock = useClock('Asia/Kolkata');
   const V = { kanji: HeroKanji, kinetic: HeroKinetic, terminal: HeroTerminal }[t.hero] || HeroKanji;
   return (
     <section className="hero" id="top" data-screen-label="Hero">
       <V t={t} />
       <div className="hero-foot">
         <div>Based in<b>Harayana, India</b></div>
-        <div>Local time<b>{clock} JST</b></div>
+        <div>Local time<b>{clock} IST</b></div>
         <div>Currently<b>AI Eng.</b></div>
         <div>Status<b className="acc">● Available </b></div>
       </div>
@@ -1379,7 +1379,7 @@ function App() {
         <a href="#top" className="logo"><span className="hanko">{t.last ? (t.last[0] === 'S' ? 'स' : t.last[0]) : ''}</span><JumpText text={`${t.first} ${t.last}`} /></a>
         <nav>{nav.map(([n, l, h]) => <a key={h} href={h}><b>{n}</b><JumpText text={l} /></a>)}</nav>
         <div className="meta">
-          <span className="tz"><span className="dot" />TYO {clock}</span>
+          <span className="tz"><span className="dot" />India {clock}</span>
           <button className="mode-btn" onClick={() => setTweak('dark', !t.dark)}>{t.dark ? 'Light' : 'Dark'}</button>
         </div>
         <div className="prog" style={{ width: (prog * 100) + '%' }} />
