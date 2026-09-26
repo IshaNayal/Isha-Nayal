@@ -1,6 +1,6 @@
 # Render deployment config — static site served via nginx
 # Build Command:  echo "No build step"
-# Start Command:  docker-entrypoint.sh
+# Start Command:  (leave empty — Dockerfile CMD runs nginx)
 
 services:
   - type: web
@@ -11,4 +11,3 @@ services:
     plan: free
     branch: main
     buildCommand: echo "No build step"
-    startCommand: docker-entrypoint.sh
