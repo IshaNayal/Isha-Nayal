@@ -76,7 +76,7 @@ a:hover .jump span, .jump:hover span{animation:hop .36s steps(3) calc(var(--i)*2
 .rail b{color:var(--acc);font-weight:400}
 
 /* ============ section scaffolding ============ */
-section{position:relative;padding:clamp(80px,12vw,150px) var(--pad)}
+section{position:relative;padding:clamp(48px,8vw,150px) var(--pad)}
 .sec-head{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:end;margin-bottom:clamp(36px,6vw,72px);
   border-bottom:2px solid var(--line);padding-bottom:14px}
 .sec-head .num{font-family:var(--f-disp);font-size:clamp(44px,7vw,92px);line-height:.8;color:var(--acc)}
@@ -261,9 +261,10 @@ footer .disp{color:var(--bg)}
   .kanji-box{max-width:420px;width:100%}
   .hero-foot{grid-template-columns:1fr 1fr;row-gap:14px}
   .hero-foot > div:nth-child(2){border:0}
-  .about{grid-template-columns:1fr}
-  .portrait{max-width:300px}
-  .about-cols{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr;gap:24px}
+  .portrait{max-width:100%;margin:0}
+  .about-cols{grid-template-columns:1fr;gap:16px;margin-top:24px}
+  .about-txt p.big{font-size:clamp(20px,4vw,28px);margin-top:0}
   .grid-grid,.grid-bento{grid-template-columns:1fr}
   .grid-bento .card:nth-child(1){grid-column:auto}
   .grid-bento .card:nth-child(1) .media{min-height:220px}
