@@ -116,7 +116,7 @@ section{position:relative;padding:clamp(64px,10vw,150px) var(--pad)}
 .kanji-cv{display:block;width:100%;aspect-ratio:1}
 
 /* variant: kinetic */
-.h-kin{flex:1;display:flex;flex-direction:column;justify-content:center;gap:0;margin:0 calc(var(--pad)*-1)}
+.h-kin{flex:1;display:flex;flex-direction:column;justify-content:center;gap:0;margin:0;overflow-x:hidden}
 .row{overflow:hidden;white-space:nowrap;border-top:2px solid var(--line);padding:20px 0}
 .row:last-child{border-bottom:2px solid var(--line)}
 .row .track{display:inline-flex;animation:mq var(--sp,22s) linear infinite}
@@ -163,10 +163,11 @@ section{position:relative;padding:clamp(64px,10vw,150px) var(--pad)}
 .chips span:hover{background:var(--acc);border-color:var(--acc);color:var(--bg)}
 
 /* ============ WORK ============ */
-.work-filter{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 28px}
-.work-filter button{border:2px solid var(--line);padding:4px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.work-filter{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 28px;align-items:center}
+.work-filter button{border:2px solid var(--line);padding:4px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;min-width:0;white-space:nowrap}
 .work-filter button.on{background:var(--fg);color:var(--bg)}
 .work-filter button:hover:not(.on){background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.work-filter button span{font-size:.8em;color:var(--mute);margin-left:4px}
 
 .card{position:relative;display:flex;flex-direction:column;border:2px solid var(--line);background:var(--bg);
   transition:transform .18s steps(3), box-shadow .18s steps(3)}
@@ -271,7 +272,8 @@ footer .disp{color:var(--bg)}
   .about-txt p.big{font-size:clamp(18px,3.5vw,26px);margin-top:0}
   .about-cols{grid-template-columns:1fr;gap:8px;margin-top:8px}
   .work-filter{margin:0 0 20px;gap:6px}
-  .work-filter button{padding:6px 10px;font-size:11px}
+  .work-filter button{padding:6px 10px;font-size:11px;letter-spacing:.04em}
+  .work-filter button span{font-size:.75em}
   .grid-grid,.grid-bento{grid-template-columns:1fr}
   .grid-bento .card:nth-child(1){grid-column:auto}
   .grid-bento .card:nth-child(1) .media{min-height:220px}
