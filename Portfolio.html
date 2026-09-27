@@ -984,7 +984,7 @@ function KanjiField({ onChange }) {
       o.width = W; o.height = G;
       const c = o.getContext('2d');
       c.fillStyle = '#000'; c.textAlign = 'left'; c.textBaseline = 'middle';
-      c.font = `${Math.floor(G * 0.82)}px "Noto Devanagari", "DotGothic16", monospace`;
+      c.font = `${Math.floor(G * 0.70)}px "Noto Devanagari", "DotGothic16", monospace`;
       c.fillText(ch, 4, G / 2 + 1);
       const d = c.getImageData(0, 0, W, G).data;
       const pts = [];
