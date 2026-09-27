@@ -413,7 +413,7 @@ function About({ t }) {
         <div className="about-tree">
           <TreeCanvas />
         </div>
-        <div className="portrait rv">
+        <div className="portrait">
           <div className="ph"><span className="jpk">写真</span><span className="lbl">portrait · 3:4</span></div>
         </div>
         <div className="about-txt">
