@@ -145,7 +145,8 @@ section{position:relative;padding:clamp(64px,10vw,150px) var(--pad)}
 .band span::after{content:"■";margin-left:44px;font-size:.6em;vertical-align:middle}
 
 /* ============ ABOUT ============ */
-.about{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:clamp(28px,6vw,96px);align-items:start}
+.about{display:grid;grid-template-columns:minmax(280px,380px) minmax(200px,280px) 1fr;gap:clamp(28px,6vw,96px);align-items:start}
+.about-txt{grid-column:3}
 .portrait{position:relative;aspect-ratio:3/4;border:2px solid var(--line);box-shadow:8px 8px 0 var(--fg)}
 .ph{position:relative;width:100%;height:100%;overflow:hidden;
   background:
@@ -153,6 +154,13 @@ section{position:relative;padding:clamp(64px,10vw,150px) var(--pad)}
     var(--bg2);}
 .ph .lbl{position:absolute;left:10px;bottom:10px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;background:var(--bg);border:1.5px solid var(--line);padding:2px 7px}
 .ph .jpk{position:absolute;right:10px;top:10px;font-family:var(--f-disp);font-size:22px;writing-mode:vertical-rl;color:var(--mute)}
+.about-tree{position:relative;background:var(--bg);aspect-ratio:256/224;min-height:180px;overflow:hidden}
+.about-tree::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(to right, color-mix(in oklab,var(--fg) 7%,transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab,var(--fg) 7%,transparent) 1px, transparent 1px);
+  background-size:24px 24px;opacity:.5}
+.tree-canvas{position:relative;z-index:1;display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
 .about-txt p.big{font-family:var(--f-disp);font-size:clamp(24px,3vw,42px);line-height:1.25;text-wrap:pretty;max-width:24ch}
 .about-txt p.big em{font-style:normal;background:var(--acc);color:var(--bg);padding:0 .15em}
 .about-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px 48px;margin-top:48px}
@@ -267,8 +275,10 @@ footer .disp{color:var(--bg)}
   .hero-foot{grid-template-columns:1fr 1fr;row-gap:14px}
   .hero-foot > div:nth-child(2){border:0}
   .sec-head{margin-bottom:clamp(28px,5vw,48px);padding-bottom:10px}
-  .about{grid-template-columns:1fr;gap:8px}
-  .portrait{max-width:100%;margin:0;aspect-ratio:4/5}
+  .about{grid-template-columns:1fr;gap:4px}
+  .about-txt{grid-column:1}
+  .about-tree{max-width:100%;max-height:500px;min-height:120px}
+  .portrait{max-width:100%;margin:0;max-height:60px;aspect-ratio:auto}
   .about-txt p.big{font-size:clamp(18px,3.5vw,26px);margin-top:0}
   .about-cols{grid-template-columns:1fr;gap:8px;margin-top:8px}
   .work-filter{margin:0 0 20px;gap:6px}

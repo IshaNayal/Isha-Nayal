@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;500&family=Noto+Devanagari:wght@400;500&family=Silkscreen&family=Space+Mono:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500&family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="portfolio.css">
+<link rel="stylesheet" href="tree.css">
 </head>
 <body>
 <div id="root"></div>
@@ -16,6 +17,7 @@
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin="anonymous"></script>
+<script src="tree.js" defer></script>
 
 <!-- All Components & Application in a Single Script (bypasses file:/// CORS blocks and prevents race conditions) -->
 <script type="text/babel">
@@ -942,14 +944,24 @@ const KANJI = [
   { c: 'बुद्धि', r: 'buddhi', m: 'intelligence' },
   { c: 'जोड़', r: 'jod', m: 'to connect' },
   { c: 'सपना', r: 'sapna', m: 'dream' },
-  { c: 'दृष्टि', r: 'drishti', m: 'vision or perspective' },
+  { c: 'दृष्टि', r: 'drishti', m: 'vision' },
   { c: 'सृष्टि', r: 'srishti', m: 'creation or universe' },
   { c: 'कल्पना', r: 'kalpana', m: 'imagination' },
   { c: 'लगन', r: 'lagan', m: 'dedication or passion' },
   { c: 'जिज्ञासा', r: 'jigyasa', m: 'curiosity' },
   { c: 'नूतन', r: 'nootan', m: 'new or innovative' },
   { c: 'प्रवाह', r: 'pravah', m: 'flow or fluency' },
-  { c: 'खोज', r: 'khoj', m: 'discovery or research' }
+  { c: 'खोज', r: 'khoj', m: 'discovery or research' },
+  { c: 'लक्ष्य', r: 'lakshya', m: 'goal or target' },
+  { c: 'निष्ठा', r: 'nishtha', m: 'dedication or integrity' },
+  { c: 'संकल्प', r: 'sankalp', m: 'determination or resolve' },
+  { c: 'दक्ष', r: 'daksh', m: 'skilled or proficient' },
+  { c: 'उद्गम', r: 'udgam', m: 'origin or source' },
+  { c: 'उत्कर्ष', r: 'utkarsh', m: 'excellence or rise' },
+  { c: 'विकास', r: 'vikas', m: 'growth or development' },
+  { c: 'सेतु', r: 'setu', m: 'bridge or connector' },
+  { c: 'आभा', r: 'aabha', m: 'brilliance or glow' }
+
 ];
 
 
@@ -1089,6 +1101,279 @@ function useScrollProgress() {
 }
 
 Object.assign(window, { Scramble, JumpText, useReveal, PixelCursor, KanjiField, KANJI, useClock, useScrollProgress });
+
+
+// ==================== TREE (cherry blossom canvas) ====================
+// Extracted from tree.html — a retro pixel-art cherry blossom tree that
+// grows petals and settles them on the ground. Click the canopy to release
+// a burst of falling petals.
+
+function TreeCanvas() {
+  const canvasRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const VIRTUAL_WIDTH = 256;
+    const VIRTUAL_HEIGHT = 224;
+
+    canvas.width = VIRTUAL_WIDTH;
+    canvas.height = VIRTUAL_HEIGHT;
+    ctx.imageSmoothingEnabled = false;
+
+    const PALETTE = {
+      sky: 'transparent',
+      barkDark: '#1d0d1a',
+      barkMid: '#3a1f28',
+      barkLight: '#6e3a40',
+      barkShine: '#a65b5b',
+      canopyDark: '#8b2650',
+      canopyMid: '#cb416b',
+      canopyLight: '#ef7d95',
+      canopyBright: '#ffc3cf'
+    };
+
+    let staticCanopy = [];
+    let staticBarkPixels = [];
+    let flowerPixels = [];
+    const settledPetals = [];
+    const groundHeights = new Array(VIRTUAL_WIDTH).fill(0);
+    const GROUND_Y = VIRTUAL_HEIGHT - 15;
+
+    function buildOriginalTreeAsset() {
+      staticBarkPixels = [];
+      const startX = 118;
+      const startY = VIRTUAL_HEIGHT - 15;
+      let currentX = startX;
+      let trunkWidth = 17;
+
+      for (let y = startY; y > 130; y--) {
+        if (y < startY - 10 && y % 6 === 0) currentX--;
+        if (y < startY - 34 && y % 9 === 0) currentX++;
+        if (y % 10 === 0 && trunkWidth > 7) trunkWidth--;
+        storePixelLine(currentX, y, trunkWidth);
+      }
+
+      drawOrganicBranch(startX - 4, startY - 2, -21, 3, 6);
+      drawOrganicBranch(startX + 5, startY - 2, 22, 3, 6);
+      drawOrganicBranch(startX - 2, startY - 19, -25, -16, 7);
+      drawOrganicBranch(startX - 23, startY - 34, -18, -13, 4);
+      drawOrganicBranch(startX + 5, startY - 27, 26, -17, 7);
+      drawOrganicBranch(startX + 30, startY - 42, 15, -12, 4);
+      drawOrganicBranch(startX - 4, startY - 43, -18, -21, 5);
+      drawOrganicBranch(startX + 5, startY - 46, 18, -23, 5);
+      drawOrganicBranch(startX + 1, startY - 49, 0, -32, 5);
+    }
+
+    function drawOrganicBranch(sx, sy, dx, dy, startWidth) {
+      const steps = Math.max(Math.abs(dx), Math.abs(dy));
+      let currWidth = startWidth;
+
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const wobble = Math.sin(t * Math.PI) * 2;
+        const x = Math.floor(sx + dx * t);
+        const y = Math.floor(sy + dy * t + wobble);
+        if (i % Math.floor(steps / 3) === 0 && currWidth > 2) currWidth--;
+        storePixelLine(x, y, currWidth);
+      }
+    }
+
+    function storePixelLine(centerX, y, width) {
+      const leftEdge = Math.floor(centerX - width / 2);
+      const rightEdge = leftEdge + width;
+
+      for (let x = leftEdge; x <= rightEdge; x++) {
+        let color = PALETTE.barkMid;
+        if (x === leftEdge || x === rightEdge) {
+          color = PALETTE.barkDark;
+        } else if (x === leftEdge + 1 || x === leftEdge + 2) {
+          color = PALETTE.barkShine;
+        } else if (x < leftEdge + width * 0.5) {
+          color = PALETTE.barkLight;
+        }
+        staticBarkPixels.push({ x, y, color });
+      }
+    }
+
+    function buildCanopyAsset() {
+      staticCanopy = [];
+      const clumps = [
+        { cx: 128, cy: 70, rx: 23, ry: 17 },
+        { cx: 108, cy: 81, rx: 24, ry: 18 },
+        { cx: 148, cy: 81, rx: 24, ry: 18 },
+        { cx: 88, cy: 98, rx: 23, ry: 18 },
+        { cx: 128, cy: 96, rx: 29, ry: 21 },
+        { cx: 168, cy: 98, rx: 23, ry: 18 },
+        { cx: 78, cy: 116, rx: 17, ry: 15 },
+        { cx: 101, cy: 119, rx: 25, ry: 18 },
+        { cx: 155, cy: 119, rx: 25, ry: 18 },
+        { cx: 178, cy: 116, rx: 17, ry: 15 }
+      ];
+      const pixelSize = 2;
+
+      clumps.forEach(clump => {
+        for (let dx = -clump.rx; dx <= clump.rx; dx += pixelSize) {
+          for (let dy = -clump.ry; dy <= clump.ry; dy += pixelSize) {
+            const nx = dx / clump.rx;
+            const ny = dy / clump.ry;
+            const shape = nx * nx + ny * ny;
+            if (shape > 1) continue;
+
+            let color = PALETTE.canopyMid;
+            if (shape > 0.78) color = PALETTE.canopyDark;
+            else if (ny < -0.3 && nx < 0.25) color = PALETTE.canopyBright;
+            else if (ny < 0.12 && nx < 0.35) color = PALETTE.canopyLight;
+            else if (ny > 0.35 || nx > 0.55) color = PALETTE.canopyDark;
+
+            const px = clump.cx + dx;
+            const py = clump.cy + dy;
+            if ((px * 7 + py * 11) % 31 === 0 && ny < 0.4) {
+              color = PALETTE.canopyBright;
+            }
+
+            for (let ox = 0; ox < pixelSize; ox++) {
+              for (let oy = 0; oy < pixelSize; oy++) {
+                staticCanopy.push({ x: px + ox, y: py + oy, color });
+              }
+            }
+          }
+        }
+      });
+
+      flowerPixels = [];
+      for (let i = 0; i < 28; i++) {
+        const spot = staticCanopy[Math.floor(Math.random() * staticCanopy.length)];
+        const petalColor = Math.random() < 0.5 ? '#fff2b0' : '#fff7f2';
+        const centerColor = petalColor === '#fff2b0' ? '#ffd75e' : '#ffcfdf';
+        flowerPixels.push(
+          { x: spot.x, y: spot.y, color: centerColor },
+          { x: spot.x - 1, y: spot.y, color: petalColor },
+          { x: spot.x + 1, y: spot.y, color: petalColor },
+          { x: spot.x, y: spot.y - 1, color: petalColor },
+          { x: spot.x, y: spot.y + 1, color: petalColor }
+        );
+      }
+    }
+
+    class AssetPixelPetal {
+      constructor() {
+        this.reset();
+        this.y = this.y + (Math.random() * (VIRTUAL_HEIGHT - this.y));
+      }
+
+      reset() {
+        if (staticCanopy.length > 0) {
+          const leaf = staticCanopy[Math.floor(Math.random() * staticCanopy.length)];
+          this.x = leaf.x;
+          this.y = leaf.y;
+        } else {
+          this.x = Math.random() * VIRTUAL_WIDTH;
+          this.y = 100;
+        }
+        this.speedY = Math.random() * 0.25 + 0.35;
+        this.swayTime = Math.random() * 100;
+        this.swaySpeed = Math.random() * 0.03 + 0.02;
+        const c = [PALETTE.canopyLight, PALETTE.canopyBright, PALETTE.canopyMid];
+        this.color = c[Math.floor(Math.random() * c.length)];
+        this.isCluster = Math.random() > 0.7;
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.swayTime += this.swaySpeed;
+        this.x += Math.sin(this.swayTime) * 0.2 + 0.15;
+
+        if (this.y >= GROUND_Y) {
+          const x = Math.max(0, Math.min(VIRTUAL_WIDTH - 1, Math.floor(this.x)));
+          if (groundHeights[x] < 12) {
+            const y = GROUND_Y - groundHeights[x] - 1;
+            settledPetals.push({ x, y, color: this.color });
+            groundHeights[x]++;
+          }
+          this.reset();
+        } else if (this.x > VIRTUAL_WIDTH || this.x < 0) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        const px = Math.floor(this.x);
+        const py = Math.floor(this.y);
+        ctx.fillRect(px, py, 1, 1);
+        if (this.isCluster) {
+          ctx.fillRect(px + 1, py + 1, 1, 1);
+        }
+      }
+    }
+
+    buildOriginalTreeAsset();
+    buildCanopyAsset();
+    const canopyPixelSet = new Set(staticCanopy.map(pixel => `${pixel.x},${pixel.y}`));
+
+    const petals = [];
+    const MAX_PETALS = 35;
+    for (let i = 0; i < MAX_PETALS; i++) {
+      petals.push(new AssetPixelPetal());
+    }
+
+    const handleCanvasClick = (event) => {
+      const bounds = canvas.getBoundingClientRect();
+      const x = Math.floor((event.clientX - bounds.left) * VIRTUAL_WIDTH / bounds.width);
+      const y = Math.floor((event.clientY - bounds.top) * VIRTUAL_HEIGHT / bounds.height);
+      if (!canopyPixelSet.has(`${x},${y}`)) return;
+      for (let i = 0; i < 12; i++) {
+        const petal = new AssetPixelPetal();
+        petal.x = x + (Math.random() - 0.5) * 18;
+        petal.y = y + (Math.random() - 0.5) * 8;
+        petal.speedY = Math.random() * 0.35 + 0.45;
+        petals.push(petal);
+      }
+    };
+    canvas.addEventListener('click', handleCanvasClick);
+
+    let raf;
+    function loop() {
+      ctx.clearRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+
+      staticCanopy.forEach(l => {
+        ctx.fillStyle = l.color;
+        ctx.fillRect(l.x, l.y, 1, 1);
+      });
+      staticBarkPixels.forEach(p => {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, 1, 1);
+      });
+      flowerPixels.forEach(pixel => {
+        ctx.fillStyle = pixel.color;
+        ctx.fillRect(pixel.x, pixel.y, 1, 1);
+      });
+      settledPetals.forEach(p => {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, 1, 1);
+      });
+      petals.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      raf = requestAnimationFrame(loop);
+    }
+    loop();
+
+    return () => {
+      canvas.removeEventListener('click', handleCanvasClick);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="tree-canvas" width="1006" height="1024" />;
+}
+
+Object.assign(window, { TreeCanvas });
 
 
 // ==================== SECTIONS ====================
@@ -1238,6 +1523,9 @@ function About({ t }) {
     <section id="about" data-screen-label="About">
       <SecHead num="01" title="About" jp="मेरे बारे में " />
       <div className="about">
+        <div className="about-tree">
+          <TreeCanvas />
+        </div>
         <div className="portrait rv">
           <div className="ph"><span className="jpk">चित्र</span><span className="lbl">portrait · 3:4</span></div>
         </div>
@@ -1415,6 +1703,7 @@ function App() {
       <footer>
         <span><span className="disp">© {new Date().getFullYear()} {t.first} {t.last}</span> — built with care in Tokyo</span>
         <a href="#top">↑ Back to top / ऊपर</a>
+        <span id="currentTime" className="tz" style={{ fontSize: 11 }} />
       </footer>
 
       <TweaksPanel>

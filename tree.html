@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handcrafted Retro Pixel Cherry Blossom Tree</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #1a122c;
+      /* Classic retro night sky */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas {
+      display: block;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-crisp-edges;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Low internal resolution (Classic 256x224 Arcade/Console resolution)
+        const VIRTUAL_WIDTH = 256;
+        const VIRTUAL_HEIGHT = 224;
+
+        canvas.width = VIRTUAL_WIDTH;
+        canvas.height = VIRTUAL_HEIGHT;
+        ctx.imageSmoothingEnabled = false;
+
+        // Authentic Retro Pixel Art Palette
+        const PALETTE = {
+            sky: '#1a122c',
+            barkDark: '#1d0d1a',   // Hard outline color
+            barkMid: '#3a1f28',    // Core wood shadow
+            barkLight: '#6e3a40',  // Lighted wood surface
+            barkShine: '#a65b5b',  // Direct highlight
+            canopyDark: '#8b2650',  // Deep leaf shadow
+            canopyMid: '#cb416b',   // Base leaf pink
+            canopyLight: '#ef7d95', // Highlight leaf pink
+            canopyBright: '#ffc3cf' // Direct bloom sun reflection
+        };
+
+                let staticCanopy = [];
+        let staticBarkPixels = [];
+        let flowerPixels = [];
+        const settledPetals = [];
+        const groundHeights = new Array(VIRTUAL_WIDTH).fill(0);
+        const GROUND_Y = VIRTUAL_HEIGHT - 15;
+
+
+        // A crooked, tapered trunk with visible roots and branches reaching into the crown.
+        function buildOriginalTreeAsset() {
+            staticBarkPixels = [];
+
+            const startX = 118;
+            const startY = VIRTUAL_HEIGHT - 15;
+            let currentX = startX;
+            let trunkWidth = 17;
+
+            for (let y = startY; y > 130; y--) {
+                if (y < startY - 10 && y % 6 === 0) currentX--;
+                if (y < startY - 34 && y % 9 === 0) currentX++;
+                if (y % 10 === 0 && trunkWidth > 7) trunkWidth--;
+                storePixelLine(currentX, y, trunkWidth);
+            }
+
+            // Roots flare out at the base; upper limbs fork toward the blossoms.
+            drawOrganicBranch(startX - 4, startY - 2, -21, 3, 6);
+            drawOrganicBranch(startX + 5, startY - 2, 22, 3, 6);
+            drawOrganicBranch(startX - 2, startY - 19, -25, -16, 7);
+            drawOrganicBranch(startX - 23, startY - 34, -18, -13, 4);
+            drawOrganicBranch(startX + 5, startY - 27, 26, -17, 7);
+            drawOrganicBranch(startX + 30, startY - 42, 15, -12, 4);
+            drawOrganicBranch(startX - 4, startY - 43, -18, -21, 5);
+            drawOrganicBranch(startX + 5, startY - 46, 18, -23, 5);
+            drawOrganicBranch(startX + 1, startY - 49, 0, -32, 5);
+        }
+
+
+
+
+        function drawOrganicBranch(sx, sy, dx, dy, startWidth) {
+            const steps = Math.max(Math.abs(dx), Math.abs(dy));
+            let currWidth = startWidth;
+
+            for (let i = 0; i <= steps; i++) {
+                const t = i / steps;
+                // Add a subtle sine wave bounce to the branch so it isn't an unnaturally straight line
+                const wobble = Math.sin(t * Math.PI) * 2; 
+                
+                const x = Math.floor(sx + dx * t);
+                const y = Math.floor(sy + dy * t + wobble);
+
+                if (i % Math.floor(steps / 3) === 0 && currWidth > 2) currWidth--;
+
+                storePixelLine(x, y, currWidth);
+            }
+        }
+
+        // Stores wood pixels with absolute retro layering (Dark outline edges + directional lighting)
+        function storePixelLine(centerX, y, width) {
+            const leftEdge = Math.floor(centerX - width / 2);
+            const rightEdge = leftEdge + width;
+
+            for (let x = leftEdge; x <= rightEdge; x++) {
+                let color = PALETTE.barkMid;
+
+                // Absolute edge outlines
+                if (x === leftEdge || x === rightEdge) {
+                    color = PALETTE.barkDark;
+                } 
+                // Left-aligned direct highlights mimicking a light source from the top-left
+                else if (x === leftEdge + 1 || x === leftEdge + 2) {
+                    color = PALETTE.barkShine;
+                } else if (x < leftEdge + width * 0.5) {
+                    color = PALETTE.barkLight;
+                }
+
+                staticBarkPixels.push({ x, y, color });
+            }
+        }
+
+        // Layer overlapping blossom puffs into a broad, scalloped pixel-art crown.
+        function buildCanopyAsset() {
+            staticCanopy = [];
+            const clumps = [
+                { cx: 128, cy: 70, rx: 23, ry: 17 },
+                { cx: 108, cy: 81, rx: 24, ry: 18 },
+                { cx: 148, cy: 81, rx: 24, ry: 18 },
+                { cx: 88, cy: 98, rx: 23, ry: 18 },
+                { cx: 128, cy: 96, rx: 29, ry: 21 },
+                { cx: 168, cy: 98, rx: 23, ry: 18 },
+                { cx: 78, cy: 116, rx: 17, ry: 15 },
+                { cx: 101, cy: 119, rx: 25, ry: 18 },
+                { cx: 155, cy: 119, rx: 25, ry: 18 },
+                { cx: 178, cy: 116, rx: 17, ry: 15 }
+            ];
+            const pixelSize = 2;
+
+            clumps.forEach(clump => {
+                for (let dx = -clump.rx; dx <= clump.rx; dx += pixelSize) {
+                    for (let dy = -clump.ry; dy <= clump.ry; dy += pixelSize) {
+                        const nx = dx / clump.rx;
+                        const ny = dy / clump.ry;
+                        const shape = nx * nx + ny * ny;
+                        if (shape > 1) continue;
+
+                        let color = PALETTE.canopyMid;
+                        if (shape > 0.78) color = PALETTE.canopyDark;
+                        else if (ny < -0.3 && nx < 0.25) color = PALETTE.canopyBright;
+                        else if (ny < 0.12 && nx < 0.35) color = PALETTE.canopyLight;
+                        else if (ny > 0.35 || nx > 0.55) color = PALETTE.canopyDark;
+
+                        const px = clump.cx + dx;
+                        const py = clump.cy + dy;
+                        if ((px * 7 + py * 11) % 31 === 0 && ny < 0.4) {
+                            color = PALETTE.canopyBright;
+                        }
+
+                        for (let ox = 0; ox < pixelSize; ox++) {
+                            for (let oy = 0; oy < pixelSize; oy++) {
+                                staticCanopy.push({ x: px + ox, y: py + oy, color });
+                            }
+                        }
+                    }
+                }
+                        });
+
+            // Tiny warm blossoms dotted across the pink canopy.
+            flowerPixels = [];
+            for (let i = 0; i < 28; i++) {
+                const spot = staticCanopy[Math.floor(Math.random() * staticCanopy.length)];
+                const petalColor = Math.random() < 0.5 ? '#fff2b0' : '#fff7f2';
+                const centerColor = petalColor === '#fff2b0' ? '#ffd75e' : '#ffcfdf';
+                flowerPixels.push(
+                    { x: spot.x, y: spot.y, color: centerColor },
+                    { x: spot.x - 1, y: spot.y, color: petalColor },
+                    { x: spot.x + 1, y: spot.y, color: petalColor },
+                    { x: spot.x, y: spot.y - 1, color: petalColor },
+                    { x: spot.x, y: spot.y + 1, color: petalColor }
+                );
+            }
+        }
+
+
+        // Falling Petal Engine
+
+        class AssetPixelPetal {
+            constructor() {
+                this.reset();
+                // Randomly pre-scatter them down the screen on initialization
+                this.y = this.y + (Math.random() * (VIRTUAL_HEIGHT - this.y)); 
+            }
+
+            reset() {
+                // Break off directly from one of our layered static leaf pixels
+                if (staticCanopy.length > 0) {
+                    const leaf = staticCanopy[Math.floor(Math.random() * staticCanopy.length)];
+                    this.x = leaf.x;
+                    this.y = leaf.y;
+                } else {
+                    this.x = Math.random() * VIRTUAL_WIDTH;
+                    this.y = 100;
+                }
+
+                this.speedY = Math.random() * 0.25 + 0.35;
+                this.swayTime = Math.random() * 100;
+                this.swaySpeed = Math.random() * 0.03 + 0.02;
+
+                const c = [PALETTE.canopyLight, PALETTE.canopyBright, PALETTE.canopyMid];
+                this.color = c[Math.floor(Math.random() * c.length)];
+                
+                // Retro single pixel flakes or double-pixel step fragments
+                this.isCluster = Math.random() > 0.7;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.swayTime += this.swaySpeed;
+                
+                // Smooth retro floating zig-zag pattern drifting slowly to the right
+                this.x += Math.sin(this.swayTime) * 0.2 + 0.15;
+
+                                if (this.y >= GROUND_Y) {
+                    const x = Math.max(0, Math.min(VIRTUAL_WIDTH - 1, Math.floor(this.x)));
+                    if (groundHeights[x] < 12) {
+                        const y = GROUND_Y - groundHeights[x] - 1;
+                        settledPetals.push({ x, y, color: this.color });
+                        groundHeights[x]++;
+                    }
+                    this.reset();
+                } else if (this.x > VIRTUAL_WIDTH || this.x < 0) {
+                    this.reset();
+                }
+
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                const px = Math.floor(this.x);
+                const py = Math.floor(this.y);
+
+                ctx.fillRect(px, py, 1, 1);
+                if (this.isCluster) {
+                    ctx.fillRect(px + 1, py + 1, 1, 1); // Authentic 16-bit stepped pixel detail
+                }
+            }
+        }
+
+        // Initialize Scene Layout
+                buildOriginalTreeAsset();
+        buildCanopyAsset();
+        const canopyPixelSet = new Set(staticCanopy.map(pixel => `${pixel.x},${pixel.y}`));
+
+        const petals = [];
+        const MAX_PETALS = 35;
+                for (let i = 0; i < MAX_PETALS; i++) {
+            petals.push(new AssetPixelPetal());
+        }
+
+        canvas.addEventListener('click', event => {
+            const bounds = canvas.getBoundingClientRect();
+            const x = Math.floor((event.clientX - bounds.left) * VIRTUAL_WIDTH / bounds.width);
+            const y = Math.floor((event.clientY - bounds.top) * VIRTUAL_HEIGHT / bounds.height);
+
+            if (!canopyPixelSet.has(`${x},${y}`)) return;
+
+            // A canopy click releases a small burst that settles using the usual ground logic.
+            for (let i = 0; i < 12; i++) {
+                const petal = new AssetPixelPetal();
+                petal.x = x + (Math.random() - 0.5) * 18;
+                petal.y = y + (Math.random() - 0.5) * 8;
+                petal.speedY = Math.random() * 0.35 + 0.45;
+                petals.push(petal);
+            }
+        });
+
+        // Main Rendering Loop
+        function loop() {
+                        // Draw the night sky and ground.
+            ctx.fillStyle = PALETTE.sky;
+            ctx.fillRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+            ctx.fillStyle = '#120a1e';
+            ctx.fillRect(0, VIRTUAL_HEIGHT - 15, VIRTUAL_WIDTH, 15);
+
+            // Draw the tree, then update and draw falling petals.
+            staticCanopy.forEach(l => {
+                ctx.fillStyle = l.color;
+                ctx.fillRect(l.x, l.y, 1, 1);
+            });
+            // Keep the trunk and limbs in front so they visibly join the canopy.
+            staticBarkPixels.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, 1, 1);
+            });
+            flowerPixels.forEach(pixel => {
+                ctx.fillStyle = pixel.color;
+                ctx.fillRect(pixel.x, pixel.y, 1, 1);
+            });
+            settledPetals.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, 1, 1);
+            });
+            petals.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+  </script>
+</body>
+</html>
