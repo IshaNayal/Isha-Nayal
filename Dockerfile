@@ -5,6 +5,8 @@ COPY Portfolio.html /usr/share/nginx/html/index.html
 COPY sections.jsx /usr/share/nginx/html/
 COPY tweaks_panel.jsx /usr/share/nginx/html/
 COPY effects.jsx /usr/share/nginx/html/
+COPY tree.css /usr/share/nginx/html/
+COPY tree.js /usr/share/nginx/html/
 COPY Portfolio.html.srcmap.json /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
