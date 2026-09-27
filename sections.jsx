@@ -267,20 +267,10 @@ function TreeCanvas() {
   return <canvas ref={canvasRef} className="tree-canvas" width="256" height="224" />;
 }
 
-const PROJECTS = [
-  { n: '01', t: 'Kotoba', jp: '言葉', yr: '2026', kind: 'ai', tag: 'LLM · RAG', d: 'Retrieval-augmented assistant over 40k internal docs. Hybrid search, citation grounding, eval harness.', role: 'Lead engineer', img: 'rag pipeline diagram / product ui' },
-  { n: '02', t: 'Hoshi', jp: '星', yr: '2025', kind: 'app', tag: 'iOS · SwiftUI', d: 'Offline-first habit tracker with on-device ML nudges. 120k downloads, 4.8★.', role: 'Solo dev', img: 'iphone screens' },
-  { n: '03', t: 'Mado', jp: '窓', yr: '2025', kind: 'ai', tag: 'Agents · Tools', d: 'Browser agent that fills multi-step forms from plain-language intent. Planner + verifier loop.', role: 'Co-founder', img: 'agent trace ui' },
-  { n: '04', t: 'Kumo Eval', jp: '雲', yr: '2024', kind: 'oss', tag: 'Open source', d: 'Lightweight eval framework for prompt regressions. 2.1k GitHub stars.', role: 'Maintainer', img: 'terminal / dashboard' },
-  { n: '05', t: 'Tabi', jp: '旅', yr: '2024', kind: 'app', tag: 'React Native', d: 'Trip planner that turns screenshots and links into a day-by-day itinerary.', role: 'Full-stack', img: 'mobile itinerary' },
-  { n: '06', t: 'Oto', jp: '音', yr: '2023', kind: 'ai', tag: 'Speech · Edge', d: 'Real-time meeting transcription running Whisper on-device, sub-300ms latency.', role: 'ML engineer', img: 'waveform / transcript' },
-];
 
-const JOBS = [
-  { from: '2024', to: 'Now', jp: '現在', role: 'Senior AI Engineer', co: 'Placeholder Labs · Tokyo / Remote', pts: ['Shipped LLM features to 2M+ users; owns eval + guardrail infra.', 'Cut inference cost 58% via distillation and response caching.', 'Mentors 4 engineers on applied ML practice.'] },
-  { from: '2021', to: '2024', jp: '三年', role: 'Mobile & ML Engineer', co: 'Studio Company · Osaka', pts: ['Built iOS/Android apps for 12 clients across fintech and health.', 'Introduced on-device models for search and recommendations.'] },
-  { from: '2019', to: '2021', jp: '二年', role: 'Software Engineer', co: 'Startup Inc. · Remote', pts: ['Full-stack TypeScript; data pipelines and internal tooling.'] },
-];
+
+
+
 
 /* ---------------- HERO ---------------- */
 function HeroKanji({ t }) {
@@ -339,7 +329,7 @@ function HeroTerminal({ t }) {
     ['$ ', 'whoami'],
     ['', `${t.first.toLowerCase()}_${t.last.toLowerCase()} — ai engineer / app developer`],
     ['$ ', 'cat focus.txt'],
-    ['', '> LLM systems, agents, evals\n> native iOS + react native\n> on-device inference'],
+    ['', '> LLM systems, agents, evals\n> native iOS \n> on-device inference'],
     ['$ ', 'status --now'],
     ['ok', '[ok] writing about evals · building in public'],
   ];
@@ -388,7 +378,7 @@ function Hero({ t }) {
 }
 
 function Band() {
-  const w = ['LLM Systems', 'エージェント', 'iOS · SwiftUI', '評価', 'React Native', 'オンデバイス', 'Evals', 'RAG', 'プロダクト'];
+  const w = ['LLM Systems', 'エージェント', 'iOS · SwiftUI', '評価', , 'オンデバイス', 'Evals', 'RAG', 'プロダクト'];
   return (
     <div className="band" aria-hidden="true"><div className="track">{[...w, ...w].map((x, i) => <span key={i}>{x}</span>)}</div></div>
   );
@@ -413,16 +403,13 @@ function About({ t }) {
         <div className="about-tree">
           <TreeCanvas />
         </div>
-        <div className="portrait">
-          <div className="ph"><span className="jpk">写真</span><span className="lbl">portrait · 3:4</span></div>
-        </div>
         <div className="about-txt">
           <p className="big up">I turn <em>models</em> into products people actually open every day.</p>
           <div className="about-cols">
             <p className="up d1">{t.first} is an AI engineer and app developer with 7 years shipping software — from on-device speech models to agentic web tools. Works at the seam between research and product, where evals matter more than demos.</p>
             <p className="up d2">Writes about building with LLMs, practical evaluation, and the craft of small, fast apps. Previously consulted for fintech and health teams across Japan.</p>
             <div className="stack up d1"><h4>AI / ML</h4><div className="chips">{['PyTorch', 'LLM APIs', 'RAG', 'Agents', 'Evals', 'Whisper', 'Core ML', 'vLLM'].map(s => <span key={s}>{s}</span>)}</div></div>
-            <div className="stack up d2"><h4>App / Platform</h4><div className="chips">{['Swift', 'SwiftUI', 'React Native', 'TypeScript', 'Next.js', 'Postgres', 'AWS', 'Go'].map(s => <span key={s}>{s}</span>)}</div></div>
+            <div className="stack up d2"><h4>App / Platform</h4><div className="chips">{['Swift', 'SwiftUI', , 'TypeScript', 'Next.js', 'Postgres', 'AWS', 'Go'].map(s => <span key={s}>{s}</span>)}</div></div>
           </div>
         </div>
       </div>
@@ -445,21 +432,15 @@ function Card({ p }) {
 }
 
 function Work({ t }) {
-  const [f, setF] = useS('all');
-  const list = PROJECTS.filter(p => f === 'all' || p.kind === f);
   React.useEffect(() => {
     document.querySelectorAll('#work .up:not(.in)').forEach(el => el.classList.add('in'));
-  }, [f, t.grid]);
-  const filters = [['all', 'All'], ['ai', 'AI'], ['app', 'Apps'], ['oss', 'Open source']];
+  }, [t.grid]);
   return (
     <section id="work" data-screen-label="Work">
       <SecHead num="02" title="Selected Work" jp="作品 — SAKUHIN" />
-      <div className="work-filter">
-        {filters.map(([k, l]) => <button key={k} className={f === k ? 'on' : ''} onClick={() => setF(k)}>{l} <span className="mute">{k === 'all' ? PROJECTS.length : PROJECTS.filter(p => p.kind === k).length}</span></button>)}
-      </div>
       {t.grid === 'list' ? (
         <div className="wlist">
-          {list.map(p => (
+          {PROJECTS.map(p => (
             <a key={p.n} href="#work" className="wrow" onClick={e => e.preventDefault()}>
               <span className="n">{p.n}</span>
               <h3>{p.t} <span className="mute" style={{ fontSize: '.55em' }}>{p.jp}</span></h3>
@@ -473,7 +454,7 @@ function Work({ t }) {
         </div>
       ) : (
         <div className={t.grid === 'bento' ? 'grid-bento' : 'grid-grid'}>
-          {list.map(p => <Card key={p.n} p={p} />)}
+          {PROJECTS.map(p => <Card key={p.n} p={p} />)}
         </div>
       )}
     </section>

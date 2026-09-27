@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Isha Nayal — Portfolio</title>
+<title>Isha NayaL</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;500&family=Noto+Devanagari:wght@400;500&family=Silkscreen&family=Space+Mono:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500&family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -1381,12 +1381,13 @@ Object.assign(window, { TreeCanvas });
 const { useState: useS } = React;
 
 const PROJECTS = [
-  { n: '01', t: 'Kotoba', jp: 'शब्द', yr: '2026', kind: 'ai', tag: 'LLM · RAG', d: 'Retrieval-augmented assistant over 40k internal docs. Hybrid search, citation grounding, eval harness.', role: 'Lead engineer', img: 'rag pipeline diagram / product ui' },
-  { n: '02', t: 'Hoshi', jp: 'तारा', yr: '2025', kind: 'app', tag: 'iOS · SwiftUI', d: 'Offline-first habit tracker with on-device ML nudges. 120k downloads, 4.8★.', role: 'Solo dev', img: 'iphone screens' },
-  { n: '03', t: 'Mado', jp: 'खिड़की', yr: '2025', kind: 'ai', tag: 'Agents · Tools', d: 'Browser agent that fills multi-step forms from plain-language intent. Planner + verifier loop.', role: 'Co-founder', img: 'agent trace ui' },
-  { n: '04', t: 'Kumo Eval', jp: 'बादल', yr: '2024', kind: 'oss', tag: 'Open source', d: 'Lightweight eval framework for prompt regressions. 2.1k GitHub stars.', role: 'Maintainer', img: 'terminal / dashboard' },
-  { n: '05', t: 'Tabi', jp: 'यात्रा', yr: '2024', kind: 'app', tag: 'React Native', d: 'Trip planner that turns screenshots and links into a day-by-day itinerary.', role: 'Full-stack', img: 'mobile itinerary' },
-  { n: '06', t: 'Oto', jp: 'आवाज़', yr: '2023', kind: 'ai', tag: 'Speech · Edge', d: 'Real-time meeting transcription running Whisper on-device, sub-300ms latency.', role: 'ML engineer', img: 'waveform / transcript' },
+  { n: '01', t: 'AI Commerce Agent', yr: '2026', kind: 'ai', tag: 'LLM · RAG', d: 'Retrieval-augmented assistant over 40k internal docs. Hybrid search, citation grounding, eval harness.', role: 'Lead engineer', img: 'rag pipeline diagram / product ui' },
+ 
+  { n: '03', t: 'VocaFlow', yr: '2026', kind: 'ai', tag: 'Agents · Tools', d: 'An end-to-end AI Voice Agent built with Vapi, FastAPI, and SQLite to automate hospital appointment bookings, checks, and cancellations via natural voice interactions.', role: 'Co-founder', img: 'agent trace ui' },
+  { n: '04', t: 'EdgeReason', yr: '2026', kind: 'oss', tag: 'AI/LLM', d: 'EdgeReason is an end-to-end LLM knowledge distillation, model compression, quantization, and edge deployment project. The project explores whether the reasoning capabilities of a larger language model can be transferred to a significantly smaller model while reducing model size, memory requirements, and inference latency.', role: 'Maintainer', img: 'terminal / dashboard' },
+  { n: '05', t: 'Tabi', yr: '2024', kind: 'app', tag: 'AI', d: 'A natural language interface that translates plain English questions into SQL queries against a real database, executes them safely with guardrails preventing destructive operations, validates that the generated SQL actually answers the question asked, and presents results with a confidence score.', role: 'Full-stack', img: 'mobile itinerary' },
+  { n: '06', t: 'Oto', jp: 'आवाज़', yr: '2023', kind: 'ai', tag: 'Flutter · Dart', d: 'Real-time meeting transcription running Whisper on-device, sub-300ms latency.', role: 'ML engineer', img: 'waveform / transcript' },
+   { n: '02', t: 'Skribbl.io', yr: '2026', kind: 'app', tag: 'Flutter · Dart', d: 'A real-time multiplayer drawing and guessing game built with Flutter and Node.js, styled in an adorable retro Japanese kawaii pixel-art theme.', role: 'Solo dev', img: 'Skribbl.io' }
 ];
 
 const JOBS = [
@@ -1501,7 +1502,7 @@ function Hero({ t }) {
 }
 
 function Band() {
-  const w = ['LLM Systems', 'एजेंट', 'iOS · SwiftUI', 'मूल्यांकन', 'React Native', 'ऑन-डिवाइस', 'Evals', 'RAG', 'प्रोडक्ट'];
+  const w = ['Python', 'JavaScript', 'Pytorch ','Scikit Learn', 'Tensorflow', 'Langchain', 'Langraph', 'Numpy', 'Pandas', 'Matplotlib','MongoDB',' PostgreSQL','Redis','Node.js','Express.js','RAG','Dart','Flutter'];
   return (
     <div className="band" aria-hidden="true"><div className="track">{[...w, ...w].map((x, i) => <span key={i}>{x}</span>)}</div></div>
   );
@@ -1525,9 +1526,6 @@ function About({ t }) {
       <div className="about">
         <div className="about-tree">
           <TreeCanvas />
-        </div>
-        <div className="portrait">
-          <div className="ph"><span className="jpk">चित्र</span><span className="lbl">portrait · 3:4</span></div>
         </div>
         <div className="about-txt">
           <p className="big up">I turn <em>models</em> into products people actually open every day.</p>
@@ -1558,21 +1556,15 @@ function Card({ p }) {
 }
 
 function Work({ t }) {
-  const [f, setF] = useS('all');
-  const list = PROJECTS.filter(p => f === 'all' || p.kind === f);
   React.useEffect(() => {
     document.querySelectorAll('#work .up:not(.in)').forEach(el => el.classList.add('in'));
-  }, [f, t.grid]);
-  const filters = [['all', 'All'], ['ai', 'AI'], ['app', 'Apps'], ['oss', 'Open source']];
+  }, [t.grid]);
   return (
     <section id="work" data-screen-label="Work">
       <SecHead num="02" title="Selected Work" jp="कार्य — KARYA" />
-      <div className="work-filter">
-        {filters.map(([k, l]) => <button key={k} className={f === k ? 'on' : ''} onClick={() => setF(k)}>{l} <span className="mute">{k === 'all' ? PROJECTS.length : PROJECTS.filter(p => p.kind === k).length}</span></button>)}
-      </div>
       {t.grid === 'list' ? (
         <div className="wlist">
-          {list.map(p => (
+          {PROJECTS.map(p => (
             <a key={p.n} href="#work" className="wrow" onClick={e => e.preventDefault()}>
               <span className="n">{p.n}</span>
               <h3>{p.t} <span className="mute" style={{ fontSize: '.55em' }}>{p.jp}</span></h3>
@@ -1586,7 +1578,7 @@ function Work({ t }) {
         </div>
       ) : (
         <div className={t.grid === 'bento' ? 'grid-bento' : 'grid-grid'}>
-          {list.map(p => <Card key={p.n} p={p} />)}
+          {PROJECTS.map(p => <Card key={p.n} p={p} />)}
         </div>
       )}
     </section>
