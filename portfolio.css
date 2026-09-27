@@ -286,10 +286,10 @@ footer .disp{color:var(--bg)}
   .sec-head{grid-template-columns:auto 1fr}
   .sec-head .jp{display:none}
   .h-kin{margin:0;gap:0;overflow-x:hidden}
-  .row{padding:16px 0;overflow-x:hidden}
-  .row span{font-size:clamp(24px,5vw,56px);line-height:1.7}
-  .row.big span{font-size:clamp(32px,6.5vw,88px)}
-  .h-name{font-size:clamp(36px,7vw,100px)}
+  .row{padding:24px 0;overflow-x:hidden;min-height:auto}
+  .row span{font-size:clamp(20px,4.5vw,44px);line-height:1.8}
+  .row.big span{font-size:clamp(28px,5.5vw,72px)}
+  .h-name{font-size:clamp(32px,6.5vw,90px)}
   .hero{padding-top:80px}
 }
 @media (prefers-reduced-motion:reduce){
