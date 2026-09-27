@@ -271,7 +271,7 @@ footer .disp{color:var(--bg)}
   .sec-head{margin-bottom:clamp(28px,5vw,48px);padding-bottom:10px}
   .about{grid-template-columns:1fr;gap:2px}
   .about-txt{grid-column:1}
-  .about-tree{max-width:100%;aspect-ratio:auto;max-height:160px;min-height:0}
+  .about-tree{max-width:100%;aspect-ratio:256/224;max-height:280px;min-height:0}
   .about-txt p.big{font-size:clamp(18px,3.5vw,26px);margin-top:0}
   .about-cols{grid-template-columns:1fr;gap:8px;margin-top:8px}
   .grid-grid,.grid-bento{grid-template-columns:1fr}
