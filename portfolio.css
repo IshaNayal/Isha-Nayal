@@ -189,7 +189,7 @@ section{position:relative;padding:clamp(64px,10vw,150px) var(--pad)}
 .card .foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:10px;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
 .card .arrow{display:inline-grid;place-items:center;width:28px;height:28px;border:2px solid var(--line);transition:all .15s steps(2)}
 .card:hover .arrow{background:var(--acc);border-color:var(--acc);color:var(--bg)}
-.card-img{width:90%;height:90%;object-fit:contain;display:block;margin-top: 10px;}
+.card-img{width:100%;height:100%;object-fit:cover;display:block}
 
 .grid-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
 .grid-bento{display:grid;grid-template-columns:repeat(6,1fr);gap:24px}
