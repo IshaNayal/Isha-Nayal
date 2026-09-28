@@ -492,12 +492,12 @@ function Contact({ t }) {
   return (
     <section id="contact" className="contact" data-screen-label="Contact">
       <SecHead num="04" title="Contact" jp="連絡 — RENRAKU" />
-      <p className="mono" style={{ marginBottom: 20, maxWidth: '48ch' }}>Open to AI product roles, advisory work and speaking. Replies within two working days.</p>
+      
       <a className="c-big" href={'mailto:' + t.email}><Scramble text={t.email} duration={1000} /></a>
       <button className="c-copy" onClick={copy}>{copied ? '✓ Copied' : '⧉ Copy address'}</button>
       <div className="c-grid">
-        {[['GitHub', '@handle'], ['X / Twitter', '@handle'], ['LinkedIn', '/in/handle'], ['Writing', 'blog.domain']].map(([a, b]) => (
-          <a key={a} href="#contact" onClick={e => e.preventDefault()}><span><JumpText text={a} /><small>{b}</small></span><span>↗</span></a>
+         {[['GitHub', '@IshaNayal', 'https://github.com/IshaNayal'], ['LinkedIn', '/in/handle'], ['Writing', 'blog.domain']].map(([a, b, url]) => (
+          <a key={a} href={url || '#contact'} onClick={url ? undefined : e => e.preventDefault()} target={url ? '_blank' : undefined} rel={url ? 'noreferrer' : undefined}><span><JumpText text={a} /><small>{b}</small></span><span>↗</span></a>
         ))}
       </div>
     </section>

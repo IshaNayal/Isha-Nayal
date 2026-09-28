@@ -1402,8 +1402,8 @@ function HeroKanji({ t }) {
   return (
     <div className="h-kanji">
       <div>
-        <div className="mono mute up rv-up" style={{ fontSize: 12, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 18 }}>
-          ▸ Portfolio / ईशा नायल — vol.{new Date().getFullYear() % 100}
+        <div className="mono mute up rv-up" style={{ fontSize: 16, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 18 }}>
+          ▸ ईशा नायल — vol.{new Date().getFullYear() % 100}
         </div>
         <h1 className="h-name">
           <Scramble text={t.first} duration={900} /><br />
@@ -1616,12 +1616,12 @@ function Contact({ t }) {
   return (
     <section id="contact" className="contact" data-screen-label="Contact">
       <SecHead num="04" title="Contact" jp="संपर्क — SAMPARK" />
-      <p className="mono" style={{ marginBottom: 20, maxWidth: '48ch' }}>Open to AI product roles, advisory work and speaking. Replies within two working days.</p>
+      
       <a className="c-big" href={'mailto:' + t.email}><Scramble text={t.email} duration={1000} /></a>
       <button className="c-copy" onClick={copy}>{copied ? '✓ Copied' : '⧉ Copy address'}</button>
       <div className="c-grid">
-        {[['GitHub', '@handle'], ['X / Twitter', '@handle'], ['LinkedIn', '/in/handle'], ['Writing', 'blog.domain']].map(([a, b]) => (
-          <a key={a} href="#contact" onClick={e => e.preventDefault()}><span><JumpText text={a} /><small>{b}</small></span><span>↗</span></a>
+         {[['GitHub', '@IshaNayal', 'https://github.com/IshaNayal'],['LinkedIn', 'Isha Nayal','https://www.linkedin.com/in/isha-nayal/'], ['Mail', 'ishanayal16@gmail.com','mailto:ishanayal16@gmail.com'],['Writing', 'Isha Nayal','https://medium.com/@ishanayal16']].map(([a, b, url]) => (
+          <a key={a} href={url || '#contact'} onClick={url ? undefined : e => e.preventDefault()} target={url ? '_blank' : undefined} rel={url ? 'noreferrer' : undefined}><span><JumpText text={a} /><small>{b}</small></span><span>↗</span></a>
         ))}
       </div>
     </section>
@@ -1693,7 +1693,7 @@ function App() {
         <Contact t={t} />
       </main>
       <footer>
-        <span><span className="disp">© {new Date().getFullYear()} {t.first} {t.last}</span> — built with care in Tokyo</span>
+        <span><span className="disp">© {new Date().getFullYear()} {t.first} {t.last}</span> — built with care in India</span>
         <a href="#top">↑ Back to top / ऊपर</a>
         <span id="currentTime" className="tz" style={{ fontSize: 11 }} />
       </footer>
